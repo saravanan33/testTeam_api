@@ -83,7 +83,16 @@ class FeaturedProductsController extends Controller{
 
     //create new feture product
     public function index(){
-        $product = ProductCategory::pluck('product_category_name','product_category_id')->toArray();
+        $product['status']='success';
+        $data = ProductCategory::pluck('product_category_name','product_category_id')->toArray();
+        $tempData = [];
+        foreach($data as $key=>$value){
+            $tempArray = [];
+            $tempArray['value'] = $key;
+            $tempArray['label'] = $value;
+            $tempData[] = $tempArray;
+        }
+        $product['data'] = $tempData;
         return response()->json($product);
     }
 
