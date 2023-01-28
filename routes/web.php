@@ -20,9 +20,9 @@ $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
-$router->group(['prefix'=>'api'],function($router){
+$router->group(['prefix'=>'api','middleware'=>['Cors','CheckToken']],function($router){
     $router->post('store','ApiDetailsController@store');
-    $router->group(['prefix'=>'product'],function($router){   //,'middleware'=>'CheckToken'
+    $router->group(['prefix'=>'product'],function($router){   
         $router->post('store','FeaturedProductsController@store');
         $router->get('edit/{id}','FeaturedProductsController@edit');
         $router->get('changeStatus/{id}/{status}','FeaturedProductsController@changeStatus');
