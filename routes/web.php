@@ -20,7 +20,7 @@ $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
-$router->group(['prefix'=>'api','middleware'=>['Cors','CheckToken']],function($router){
+$router->group(['prefix'=>'api','middleware'=>['CheckToken']],function($router){
     $router->post('store','ApiDetailsController@store');
     $router->group(['prefix'=>'product'],function($router){   
         $router->post('store','FeaturedProductsController@store');
@@ -29,9 +29,6 @@ $router->group(['prefix'=>'api','middleware'=>['Cors','CheckToken']],function($r
         $router->post('update/{id}','FeaturedProductsController@update');
         $router->post('list','FeaturedProductsController@list');
         $router->get('index','FeaturedProductsController@index');
-
-
-
     });
 });
 $router->get('login','Controller@login');
