@@ -17,7 +17,7 @@ class CheckToken{
         $responseData['status_code'] = 301;
 
         $apiKey = isset($hearder['x-api-key'][0])&&!empty($hearder['x-api-key'][0])?$hearder['x-api-key'][0]:'';
-        $expireTime = isset($hearder['expire-time'][0])&&!empty($hearder['expire-time'][0])?$hearder['expire-time'][0]:'';
+        $expireTime = isset($hearder['expire-time'][0])&&!empty($hearder['expire-time'][0])?$hearder['expire-time'][0]:0;
         $apiDetailsCheck = ApiDetails::where('api_key',$apiKey)->where('status','A');
         if(!empty($apiDetailsCheck->first())){
             $checkApiKey = $apiDetailsCheck->first();

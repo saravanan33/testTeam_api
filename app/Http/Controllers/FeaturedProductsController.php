@@ -7,8 +7,6 @@ use Illuminate\Http\Request;
 use App\Models\FeaturedProducts\FeaturedProducts;
 use App\Models\ProductCategorys\ProductCategory;
 use Illuminate\Support\Facades\Validator;
-use phpseclib\Crypt\RSA as Crypt_RSA;
-use Illuminate\Support\Facades\Crypt;
 
 class FeaturedProductsController extends Controller{
 
@@ -38,6 +36,9 @@ class FeaturedProductsController extends Controller{
         }
         if(isset($requestData['status']) && !empty($requestData['status'])){
             $listData = $listData->where('featured_products.status',$requestData['status']);
+        }
+        if(isset($requestData['currency_code']) && !empty($requestData['currency_code'])){
+            $listData = $listData->where('featured_products.currency_code',$requestData['currency_code']);
         }
 
         $totalCount = $listData->count();
@@ -73,6 +74,7 @@ class FeaturedProductsController extends Controller{
                 $tempArray['product_category_name'] = $value['product_category_name'];
                 $tempArray['product_description'] = $value['product_description'];
                 $tempArray['product_price'] = $value['product_price'];
+                $tempArray['currency_code'] = $value['currency_code'];
                 $tempArray['sku_code'] = $value['sku_code'];
                 $tempArray['status'] = $value['status'];
                 $response['data'][] = $tempArray;
@@ -110,7 +112,8 @@ class FeaturedProductsController extends Controller{
             'product_name' => 'required',
             'product_category_id'=> 'required',
             'product_description'=> 'required',
-            'product_price' => 'required'
+            'product_price' => 'required',
+            'currency_code'=>'required'
         ]);
 
         if($validation->fails()){
@@ -129,6 +132,7 @@ class FeaturedProductsController extends Controller{
         $productObject->product_category_id = $requestData['product_category_id'];
         $productObject->product_description = $requestData['product_description'];
         $productObject->product_price       = $requestData['product_price'];
+        $productObject->currency_code       = $requestData['currency_code'];
         $productObject->sku_code            = $requestData['product_category_id'].time().rand(1000,9999);
         $productObject->status              = 'A';
         $productObject->created_at          = date('Y-m-d H:i:s');
@@ -162,6 +166,7 @@ class FeaturedProductsController extends Controller{
             $response['data']['product_category_id'] = $tempData['product_category_id'];
             $response['data']['product_description'] = $tempData['product_description'];
             $response['data']['product_price'] = $tempData['product_price'];
+            $response['data']['currency_code'] = $tempData['currency_code'];
             $response['data']['sku_code'] = $tempData['sku_code'];
             $response['data']['status'] = $tempData['status'];
             $response['data']['created_at'] = $tempData['created_at'];
@@ -182,7 +187,8 @@ class FeaturedProductsController extends Controller{
             'product_name' => 'required',
             'product_category_id'=> 'required',
             'product_description'=> 'required',
-            'product_price' => 'required'
+            'product_price' => 'required',
+            'currency_code'=>'required'
         ]);
 
         if($validation->fails()){
@@ -202,6 +208,7 @@ class FeaturedProductsController extends Controller{
         $tempArray['product_category_id'] = $requestData['product_category_id'];
         $tempArray['product_description'] = $requestData['product_description'];
         $tempArray['product_price']       = $requestData['product_price'];
+        $tempArray['currency_code']       = $requestData['currency_code'];
         $tempArray['updated_at']          = date('Y-m-d H:i:s');
 
         $storeData = $productObject->where('featured_products_id',$id)->update($tempArray);
